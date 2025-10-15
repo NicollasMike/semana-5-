@@ -1,0 +1,53 @@
+import express from "express"
+import { Database } from "./databases.js"
+const app = express()
+app.use(express.json())
+
+const database = new Database()
+
+
+app.get('/', (req,res) => {
+    res.send("Você está na página principal")
+})
+
+app.get('/usuario', (req,res) => {
+    const data = database.select("usuario")
+    res.status(200).json(data)
+    // para criar um usuario usamos : res.status(201).send(usuario criado)
+})
+
+app.post('/usuario', (req,res) => {
+    const {nome, idade, email} = req.body
+    if (nome && idade && email){
+    database.insert("usuario",{nome, idade, email})
+    return  res.status(201).send("criou-se um usuário")
+    }
+    
+    
+    return res.status(400).send("falta informações")
+
+    
+})
+
+app.get('/produto', (req,res) => {
+    const data = database.select("produto")
+    res.status(200).json(data)
+    // para criar um produto usamos : res.status(201).send(produto criado)
+})
+
+app.post('/produto', (req,res) => {
+    const {descricao, qntd, preco} = req.body
+    if (descricao && qntd && preco){
+    database.insert("produto",{descricao, qntd, preco})
+    return  res.status(201).send("criou-se um produto")
+    }
+    
+    
+    return res.status(400).send("falta informações")
+
+    
+})
+
+app.listen(3333,  ()  => {
+    console.log("Servidor rodando em http://localhost:3333")
+})
