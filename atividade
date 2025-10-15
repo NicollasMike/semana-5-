@@ -1,0 +1,18 @@
+import http from 'node:http'
+
+const server = http.createServer((req, res) => {
+    const {method, url} = req
+
+    if (url == "/user" && method == "GET"){
+        return res.end("search users")
+    }
+    
+    if (url == "/user" && method == "POST"){
+        return res.end("create users")
+    }
+
+    console.log(method, url)
+    
+    return res.end("aula PTAS")
+})
+server.listen(3333)
